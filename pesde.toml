@@ -1,4 +1,4 @@
-name = "bizwiz3/orca"
+name = "bizwiz3/nova"
 version = "0.1.0"
 description = "express like luau backend framework"
 authors = ["@loej030 <https://github.com/BizWiz3>"]
