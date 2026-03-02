@@ -1,7 +1,7 @@
 name = "bizwiz3/nova"
 version = "0.1.0"
-description = "express like luau backend framework"
-authors = ["@loej030 <https://github.com/BizWiz3>"]
+description = "A high-performance, filesystem-based web framework built specifically for the Lune runtime."
+authors = ["BizWiz3 (https://github.com/BizWiz3)", "Leoj030 (https://github.com/Leoj030)"]
 license = "MIT"
 repository = "https://github.com/BizWiz3/nova"
 private = false
@@ -9,7 +9,8 @@ includes =[
     "pesde.toml",
     "README.md",
     "LICENSE",
-    "src/**/*.luau"
+    "src/**/*.luau",
+    "docs/**/*.md"
 ]
 
 [target]
