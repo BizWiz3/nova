@@ -1,4 +1,4 @@
-local net = require("@lune/net");
+local net = require("@lune/net")
 local serde = require("@lune/serde")
 local fs = require("@lune/fs")
 local process = require("@lune/process")
@@ -15,8 +15,9 @@ export type Next = Types.Next
 local Nova = {}
 Nova.__index = Nova
 
-local baseDir = "../../../../../../app"
+local baseDir = "./app"
 local absolutePath = process.cwd
+local srcPath = "/lune_packages/.pesde/bizwiz3+nova/0.1.0/nova/src"
 local routePatterns = {}
 
 Nova.chain = require("./chain")
@@ -68,6 +69,14 @@ local function routerDispatcher(origReq)
     req.query = req.query or {} 
 
     return handler(req)
+end
+
+local function createAppDir() 
+    fs.copy(`{process.cwd}/app`, `{process.cwd}{srcPath}/app`)
+end
+
+local function removeAppDir() 
+    fs.removeDir(`{process.cwd}{srcPath}/app`)
 end
 
 local function buildRouter(currentDir: string, currentRoute: string)
@@ -124,6 +133,16 @@ end
 
 function Nova:listen(callback: () -> ())
     local start = os.clock()
+    local srcDir = fs.readDir(`{process.cwd}{srcPath}`)
+    
+    for _, item in ipairs(srcDir) do 
+        if item == "app" and fs.isDir(`{process.cwd}{srcPath}/{item}`) then
+            removeAppDir()
+        end
+    end
+
+    createAppDir()
+
     buildRouter(baseDir, "")
  
     local rootPipeline = Nova.chain(self.middlewares, routerDispatcher)
@@ -172,7 +191,6 @@ function Nova:listen(callback: () -> ())
                 }
             }
         else
-            -- ... (Your existing crash handler logic)
             local errorMessage = tostring(result)
             return {
                 status = 500,
@@ -190,7 +208,7 @@ function Nova:listen(callback: () -> ())
 
     if callback then 
         callback() 
-    end
+    end 
 end
 
 return Nova
