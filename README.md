@@ -1,4 +1,7 @@
-# [Nova](https://github.com/BizWiz3/nova)
+<a href="https://pesde.dev/packages/bizwiz3/nova">![Static Badge](https://img.shields.io/badge/pesde-bizwiz3/nova-F19D1E?style=for-the-badge)</a>
+
+
+# Nova
 
 **A high-performance, filesystem-based web framework built specifically for the [Lune](https://lune-org.github.io/docs/) runtime.**
 

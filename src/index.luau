@@ -20,7 +20,7 @@ Nova.__index = Nova
 
 local baseDir = "./app"
 local absolutePath = process.cwd
-local srcPath = "/lune_packages/.pesde/bizwiz3+nova/0.1.2/nova/src"
+local srcPath = "/lune_packages/.pesde/bizwiz3+nova/0.1.3/nova/src"
 local routePatterns = {}
 
 Nova.chain = require("./chain")
@@ -154,60 +154,77 @@ function Nova:listen(callback: () -> ())
     local rootPipeline = Nova.chain(self.middlewares, routerDispatcher)
 
     print("\nStarting...")
-    net.serve(self.port, function(origReq)
-        local success, result = pcall(rootPipeline, origReq)
+    net.serve(self.port, {
+        address = "http://0.0.0.0",
+        handleRequest = function(origReq)
+            local success, result = pcall(rootPipeline, origReq)
 
-        if success and result == nil then
-            success = false
-            result = "Middleware chain failed to return a Response. Did you forget to 'return next(req)'?"
-        end
-
-        local status = 200
-        if not success then
-            status = 500
-        elseif result and result.config then
-            status = result.config.status or 200
-        end
-
-        -- ANSI Coloring logic
-        local color = "\27[31m" -- Default Red
-        if status >= 200 and status < 300 then
-            color = "\27[32m" -- Green
-        elseif status >= 300 and status < 400 then
-            color = "\27[34m" -- Blue
-        end
-        local reset = "\27[0m"
-
-        print(`[{origReq.method}] {origReq.path} {color}{status}{reset}`)
-
-        if success then
-            local body = result.body
-            local contentType = result.config.isHtml and "text/html" or "application/json"
-            
-            if not result.config.isHtml and type(body) == "table" then
-                body = serde.encode("json", body)
+            if success and result == nil then
+                success = false
+                result = "Middleware chain failed to return a Response. Did you forget to 'return next(req)'?"
             end
 
-            return {
-                status = status,
-                body = body,
-                headers = { 
-                    ["Content-Type"] = contentType,
-                    ["X-Powered-By"] = "Nova" 
+            local status = 200
+            if not success then
+                status = 500
+            elseif result and result.config then
+                status = result.config.status or 200
+            end
+
+            -- ANSI Coloring logic
+            local color = "\27[31m" -- Default Red
+            if status >= 200 and status < 300 then
+                color = "\27[32m" -- Green
+            elseif status >= 300 and status < 400 then
+                color = "\27[34m" -- Blue
+            end
+            local reset = "\27[0m"
+
+            print(`[{origReq.method}] {origReq.path} {color}{status}{reset}`)
+
+            if success then
+                if origReq.method == "HEAD" then
+                    return {
+                        status = status,
+                        body = "",
+                        headers = process.env.LUNE_ENV == "dev" and { 
+                            ["X-Debug-Info"] = "Handled HEAD request",
+                            ["X-Powered-By"] = "Nova-Framework" 
+                        } or {} 
+                    }
+                else
+                    local body = result.body
+                    local contentType = result.config.isHtml and "text/html" or "application/json"
+                    
+                    if not result.config.isHtml and type(body) == "table" then
+                        body = serde.encode("json", body)
+                    end
+
+                    return {
+                        status = status,
+                        body = body,
+                        headers = process.env.LUNE_ENV == "dev" and {
+                            ["Content-Type"] = contentType,
+                            ["X-Debug-Info"] = "Handled HEAD request",
+                            ["X-Powered-By"] = "Nova-Framework" 
+                        } or { 
+                            ["Content-Type"] = contentType,
+                        }
+                    }
+                end
+            else
+                local errorMessage = tostring(result)
+                return {
+                    status = 500,
+                    body = serde.encode("json", {
+                        error = "Internal Server Error",
+                        message = process.env.LUNE_ENV == "dev" and errorMessage or "An unexpected error occurred",
+                    }),
+                    headers = { ["Content-Type"] = "application/json" }
                 }
-            }
-        else
-            local errorMessage = tostring(result)
-            return {
-                status = 500,
-                body = serde.encode("json", {
-                    error = "Internal Server Error",
-                    message = process.env.LUNE_ENV == "dev" and errorMessage or "An unexpected error occurred",
-                }),
-                headers = { ["Content-Type"] = "application/json" }
-            }
+            end
         end
-    end)
+    })
     local finish = os.clock() - start
 
     print(string.format("Ready in %.4fs\n", finish))
