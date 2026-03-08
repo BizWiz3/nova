@@ -1,5 +1,5 @@
--- Generic variant: use when you need typed params (e.g. Request<{ id: string }>)
 export type RequestWith<T> = {
+    method: string,
     path: string,
     body: {any},
     headers: {any},
@@ -13,13 +13,17 @@ export type ResponseBody = {any} | string
 
 export type ResponseOptions = {
     status: number?,
-    isHtml: boolean?
+    isHtml: boolean?,
+    headers: { [string]: string }?
 }
 
-export type NovaInstance = {
-    listen: (self: NovaInstance, callback: () -> ()) -> ()
+export type Next = () -> ()
+
+export type Nova = {
+    --[[
+        This is the listen handler
+    ]]
+    listen: (self: Nova, handler: () -> ()) -> ()
 }
 
-export type Next = (req: Request?) -> ()
-
-return nil
+return {}

@@ -20,7 +20,7 @@ local Nova = require("@path/to/nova")
 
 local function logger(req: Nova.Request, next: Nova.Next)
     print("Incoming request to: " .. req.path)
-    return next(req) -- You must return next(req) to continue the chain
+    next() -- You must call next() to continue the chain
 end
 
 local app = Nova.new(8080, { logger })
@@ -39,7 +39,7 @@ local function protect(req, next)
     if not auth then
         return Nova.response({ error = "Unauthorized" }, { status = 401 })
     end
-    return next(req)
+    next()
 end
 
 local Admin = {}
@@ -50,22 +50,6 @@ Admin.Get = Nova.chain({ protect }, function(req)
 end)
 
 return Admin
-```
-
-## The Importance of `return`
-
-In Nova, middlewares are functional. You must return the result of the `next(req)` call. If you forget to return, the chain will break and the server will return an error.
-
-```lua
--- WRONG
-function middleware(req, next)
-    next(req)
-end
-
--- CORRECT
-function middleware(req, next)
-    return next(req)
-end
 ```
 
 ## Next Steps

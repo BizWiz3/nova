@@ -114,7 +114,7 @@ local function validate(req, next)
     if not req.headers["x-api-key"] then
         return Nova.response({ error = "Forbidden" }, { status = 403 })
     end
-    return next(req)
+    next()
 end
 
 Route.Get = Nova.chain({ validate }, function(req)
