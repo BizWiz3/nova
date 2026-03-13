@@ -62,10 +62,25 @@ local function routerDispatcher(request)
 
     local method = request.method:sub(1, 1):upper() .. request.method:sub(2):lower()
 
+    local rawBody = request.body or ""
+    local decodedBody = {}
+
+    if #rawBody > 0 then
+        local success, result = pcall(function()
+            return serde.decode("json", rawBody)
+        end)
+        
+        if success then
+            decodedBody = result
+        else
+            print("Warning: Failed to decode JSON body")
+        end
+    end
+
     local req = {
         method = request.method,
         path = cleanPath,
-        body = serde.decode("json", request.body),
+        body = decodedBody,
         headers = request.headers,
         query = request.query or {},
         params = {}
