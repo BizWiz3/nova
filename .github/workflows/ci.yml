@@ -14,8 +14,28 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Build Docker Image
-        run: docker build -t nova-app .
+      - name: Install Lune
+        run: |
+          curl -f -L "https://github.com/lune-org/lune/releases/download/v0.10.4/lune-0.10.4-linux-x86_64.zip" -o lune.zip
+          unzip -j lune.zip
+          chmod +x lune
+          sudo mv lune /usr/local/bin/lune
+          rm lune.zip
+
+      - name: Install Pesde
+        run: |
+          curl -f -L "https://github.com/pesde-pkg/pesde/releases/download/v0.7.2+registry.0.2.3/pesde-0.7.2-linux-x86_64.zip" -o pesde.zip
+          unzip -j pesde.zip
+          chmod +x pesde
+          sudo mv pesde /usr/local/bin/pesde
+          rm pesde.zip
+
+      - name: Install CI Dependencies
+        working-directory: ./ci
+        run: pesde install
+        env:
+          PESDE_CONFIG_USER_TOKEN_STORE: file
 
       - name: Run CI Tests
-        run: docker run --rm -v ${{ github.workspace }}/ci:/ci -w /ci nova-app lune run test
+        working-directory: ./ci
+        run: lune run test
