@@ -5,6 +5,6 @@ local PORT = tonumber(process.env.PORT) or 8080
 local app = Nova.new(PORT)
 
 app:listen(function()
-    print(`Server is running on http://localhost:{PORT}`)
+    print(`Server is running on PORT {PORT}`)
 end)
 

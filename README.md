@@ -18,6 +18,7 @@
   - [Route Definition](#route-definition)
   - [Routing Conventions](#routing-conventions)
   - [Middleware Chaining](#middleware-chaining)
+  - [Performance Benchmarks](#performance-benchmarks)
 
 ## Installation & Usage
 
@@ -135,4 +136,8 @@ end)
 ```
 
 *More info about middlewares soon.*
-*Happy Coding*
+
+## Performance Benchmarks
+
+<!-- BENCHMARK_START -->
+<!-- BENCHMARK_END -->

@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 AS base
+FROM ubuntu:24.04
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -20,17 +20,15 @@ RUN curl -f -L "https://github.com/pesde-pkg/pesde/releases/download/v0.7.2+regi
     rm pesde.zip
 
 WORKDIR /app
+
+ENV PESDE_CONFIG_USER_TOKEN_STORE=file
+
 COPY pesde.toml ./
+
 RUN mkdir -p /root/.pesde && pesde install
+
 COPY . .
 
-# --- TEST STAGE ---
-FROM base AS test
-WORKDIR /app/ci
-RUN lune run test
-
-# --- Benchmark STAGE ---
-FROM base AS final
-WORKDIR /app/benchmark
 EXPOSE 10000
+
 CMD ["lune", "run", "start"]

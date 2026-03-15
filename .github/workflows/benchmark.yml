@@ -1,5 +1,8 @@
 name: Nova Performance Benchmark
-on: [push, pull_request]
+
+on:
+  pull_request:
+    branches: [ "main" ]
 
 permissions:
   contents: write
@@ -13,7 +16,7 @@ jobs:
 
       - name: Build and Start Nova Server
         run: |
-          docker build -t nova-app .
+          docker build -t nova-app ./nova-test    # <-- was "."
           docker run -d --network="host" \
             --name nova-running-app \
             -e LOGGER=dev \
@@ -32,48 +35,45 @@ jobs:
 
       - name: Run k6 Benchmark (with Resource Monitoring)
         run: |
-          touch ${{ github.workspace }}/results.json
-          touch ${{ github.workspace }}/summary.json
-          touch ${{ github.workspace }}/stats.log
-          chmod 666 ${{ github.workspace }}/results.json ${{ github.workspace }}/summary.json ${{ github.workspace }}/stats.log
+          NOVA_DIR=${{ github.workspace }}/benchmark
 
-          # Stream docker stats into a log file during the entire benchmark
+          touch $NOVA_DIR/results.json
+          touch $NOVA_DIR/summary.json
+          touch $NOVA_DIR/stats.log
+          chmod 666 $NOVA_DIR/results.json $NOVA_DIR/summary.json $NOVA_DIR/stats.log
+
           docker stats nova-running-app \
             --format "{{.CPUPerc}},{{.MemUsage}},{{.MemPerc}},{{.NetIO}},{{.BlockIO}}" \
-            >> ${{ github.workspace }}/stats.log &
+            >> $NOVA_DIR/stats.log &
           STATS_PID=$!
 
           docker run --rm \
             --network="host" \
             --add-host=host.docker.internal:host-gateway \
-            -v ${{ github.workspace }}:/io \
+            -v $NOVA_DIR:/io \
             -i grafana/k6 run /io/scripts/bench.js \
             --out json=/io/results.json \
             --summary-export=/io/summary.json
 
-          # Stop the background stats collection
           kill $STATS_PID 2>/dev/null || true
         continue-on-error: true
 
       - name: Parse Resource Usage Stats
         if: always()
         run: |
-          if [ -f "stats.log" ] && [ -s "stats.log" ]; then
-            # Strip all non-numeric characters except dot, then find peak and average
-            PEAK_CPU=$(awk -F',' '{gsub(/[^0-9.]/, "", $1); print $1}' stats.log \
+          STATS_FILE=${{ github.workspace }}/nova-test/stats.log   # <-- updated path
+          if [ -f "$STATS_FILE" ] && [ -s "$STATS_FILE" ]; then
+            PEAK_CPU=$(awk -F',' '{gsub(/[^0-9.]/, "", $1); print $1}' $STATS_FILE \
               | sort -g | tail -1)
-            AVG_CPU=$(awk -F',' '{gsub(/[^0-9.]/, "", $1); sum+=$1; count++} END {printf "%.2f", sum/count}' stats.log)
-
-            # Extract memory usage (e.g. "123.4MiB / 7.8GiB") — take used portion
-            PEAK_MEM=$(awk -F',' '{print $2}' stats.log \
+            AVG_CPU=$(awk -F',' '{gsub(/[^0-9.]/, "", $1); sum+=$1; count++} END {printf "%.2f", sum/count}' $STATS_FILE)
+            PEAK_MEM=$(awk -F',' '{print $2}' $STATS_FILE \
               | awk '{print $1}' | sort -h | tail -1)
-            AVG_MEM_PERC=$(awk -F',' '{gsub(/[^0-9.]/, "", $3); sum+=$3; count++} END {printf "%.2f", sum/count}' stats.log)
+            AVG_MEM_PERC=$(awk -F',' '{gsub(/[^0-9.]/, "", $3); sum+=$3; count++} END {printf "%.2f", sum/count}' $STATS_FILE)
 
             echo "PEAK_CPU=${PEAK_CPU}" >> $GITHUB_ENV
             echo "AVG_CPU=${AVG_CPU}" >> $GITHUB_ENV
             echo "PEAK_MEM=${PEAK_MEM}" >> $GITHUB_ENV
             echo "AVG_MEM_PERC=${AVG_MEM_PERC}" >> $GITHUB_ENV
-
             echo "Resource stats parsed successfully."
           else
             echo "stats.log not found or empty — skipping resource parsing."
@@ -86,20 +86,21 @@ jobs:
       - name: Generate Action Summary
         if: always()
         run: |
+          SUMMARY_FILE=${{ github.workspace }}/nova-test/summary.json   # <-- updated path
           echo "## Nova Performance Summary" >> $GITHUB_STEP_SUMMARY
 
-          if [ -f "summary.json" ] && [ -s "summary.json" ]; then
-            RPS=$(jq -r '.metrics.http_reqs.rate // 0' summary.json)
-            TOTAL=$(jq -r '.metrics.http_reqs.count // 0' summary.json)
-            P90=$(jq -r '.metrics.http_req_duration["p(90)"] // 0' summary.json)
-            P95=$(jq -r '.metrics.http_req_duration["p(95)"] // 0' summary.json)
-            AVG=$(jq -r '.metrics.http_req_duration.avg // 0' summary.json)
-            MED=$(jq -r '.metrics.http_req_duration.med // 0' summary.json)
-            DATA_RATE=$(jq -r '.metrics.data_received.rate // 0' summary.json)
-            FAILED=$(jq -r '.metrics.http_req_failed.passes // 0' summary.json)
+          if [ -f "$SUMMARY_FILE" ] && [ -s "$SUMMARY_FILE" ]; then
+            RPS=$(jq -r '.metrics.http_reqs.rate // 0' $SUMMARY_FILE)
+            TOTAL=$(jq -r '.metrics.http_reqs.count // 0' $SUMMARY_FILE)
+            P90=$(jq -r '.metrics.http_req_duration["p(90)"] // 0' $SUMMARY_FILE)
+            P95=$(jq -r '.metrics.http_req_duration["p(95)"] // 0' $SUMMARY_FILE)
+            AVG=$(jq -r '.metrics.http_req_duration.avg // 0' $SUMMARY_FILE)
+            MED=$(jq -r '.metrics.http_req_duration.med // 0' $SUMMARY_FILE)
+            DATA_RATE=$(jq -r '.metrics.data_received.rate // 0' $SUMMARY_FILE)
+            FAILED=$(jq -r '.metrics.http_req_failed.passes // 0' $SUMMARY_FILE)
 
-            PASSES=$(jq -r '.metrics.checks.passes // 0' summary.json)
-            FAILS=$(jq -r '.metrics.checks.fails // 0' summary.json)
+            PASSES=$(jq -r '.metrics.checks.passes // 0' $SUMMARY_FILE)
+            FAILS=$(jq -r '.metrics.checks.fails // 0' $SUMMARY_FILE)
             TOTAL_CHKS=$((PASSES + FAILS))
 
             if [ "$TOTAL_CHKS" -gt 0 ]; then
@@ -176,4 +177,3 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
           docker logs nova-running-app 2>&1 | tail -100 >> $GITHUB_STEP_SUMMARY || echo "Logs unavailable."
           echo '```' >> $GITHUB_STEP_SUMMARY
-        
