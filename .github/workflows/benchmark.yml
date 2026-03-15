@@ -149,25 +149,30 @@ jobs:
       - name: Update README with Stats
         if: env.RPS_VAL != '' && env.RPS_VAL != '0.00'
         run: |
-          NEW_STATS="### Latest Performance (Auto-updated)\n\n\
-          #### 📊 HTTP / k6 Metrics\n\n\
-          | Total Requests | Requests/sec | p95 Latency | p90 Latency | Median Latency | Avg Latency | Success Rate | Failed Requests | Throughput |\n\
-          | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n\
-          | **${{ env.TOTAL_VAL }}** | **${{ env.RPS_VAL }} req/s** | **${{ env.P95_VAL }}ms** | **${{ env.P90_VAL }}ms** | **${{ env.MED_VAL }}ms** | **${{ env.AVG_VAL }}ms** | **${{ env.SRATE_VAL }}%** | **${{ env.FAILED_VAL }}** | **${{ env.DATA_MBPS_VAL }} MB/s** |\n\n\
-          #### 🖥️ Container Resource Usage (during benchmark)\n\n\
-          | Peak CPU | Avg CPU | Peak Memory | Avg Memory % |\n\
-          | :--- | :--- | :--- | :--- |\n\
-          | ${{ env.PEAK_CPU }}% | ${{ env.AVG_CPU }}% | ${{ env.PEAK_MEM }} | ${{ env.AVG_MEM_PERC }}% |\n\n\
-          _Last Benchmarked: $(date)_"
+            NEW_STATS="### Latest Performance (Auto-updated)\n\n\
+            #### 📊 HTTP / k6 Metrics\n\n\
+            | Total Requests | Requests/sec | p95 Latency | p90 Latency | Median Latency | Avg Latency | Success Rate | Failed Requests | Throughput |\n\
+            | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n\
+            | **${{ env.TOTAL_VAL }}** | **${{ env.RPS_VAL }} req/s** | **${{ env.P95_VAL }}ms** | **${{ env.P90_VAL }}ms** | **${{ env.MED_VAL }}ms** | **${{ env.AVG_VAL }}ms** | **${{ env.SRATE_VAL }}%** | **${{ env.FAILED_VAL }}** | **${{ env.DATA_MBPS_VAL }} MB/s** |\n\n\
+            #### 🖥️ Container Resource Usage (during benchmark)\n\n\
+            | Peak CPU | Avg CPU | Peak Memory | Avg Memory % |\n\
+            | :--- | :--- | :--- | :--- |\n\
+            | ${{ env.PEAK_CPU }}% | ${{ env.AVG_CPU }}% | ${{ env.PEAK_MEM }} | ${{ env.AVG_MEM_PERC }}% |\n\n\
+            _Last Benchmarked: $(date)_"
 
-          sed -i '/<!-- BENCHMARK_START -->/,/<!-- BENCHMARK_END -->/{/<!-- BENCHMARK_START -->/b; /<!-- BENCHMARK_END -->/b; d}' README.md
-          sed -i "/<!-- BENCHMARK_START -->/a $NEW_STATS" README.md
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          git commit -m "docs: update benchmark results [skip ci]" || echo "No changes to commit"
-          git push origin HEAD:${{ github.head_ref }}
+            # Fetch and switch to the actual feature branch instead of detached HEAD
+            git fetch origin ${{ github.head_ref }}
+            git checkout ${{ github.head_ref }}
+
+            sed -i '/<!-- BENCHMARK_START -->/,/<!-- BENCHMARK_END -->/{/<!-- BENCHMARK_START -->/b; /<!-- BENCHMARK_END -->/b; d}' README.md
+            sed -i "/<!-- BENCHMARK_START -->/a $NEW_STATS" README.md
+
+            git add README.md
+            git commit -m "docs: update benchmark results [skip ci]" || echo "No changes to commit"
+            git push origin ${{ github.head_ref }}
 
       - name: Show Nova Server Logs
         if: always()
