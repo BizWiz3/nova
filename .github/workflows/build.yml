@@ -20,8 +20,8 @@ jobs:
       - name: Build Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: ./nova-test
-          file: ./nova-test/Dockerfile
+          context: ./benchmark
+          file: ./benchmark/Dockerfile
           push: false
           tags: my-lune-app:test
           cache-from: type=gha
