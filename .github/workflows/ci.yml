@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: my-lune-app:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  ci-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Lune
+        run: |
+          curl -f -L "https://github.com/lune-org/lune/releases/download/v0.10.4/lune-0.10.4-linux-x86_64.zip" -o lune.zip
+          unzip -j lune.zip
+          chmod +x lune
+          sudo mv lune /usr/local/bin/lune
+          rm lune.zip
+
+      - name: Run CI Tests
+        working-directory: ./ci
+        run: lune run test
