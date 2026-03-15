@@ -171,7 +171,7 @@ jobs:
             sed -i "/<!-- BENCHMARK_START -->/a $NEW_STATS" README.md
 
             git add README.md
-            git commit -m "docs: update benchmark results [skip ci]" || echo "No changes to commit"
+            git commit -m "docs: update benchmark results" || echo "No changes to commit"
             git push origin ${{ github.head_ref }}
 
       - name: Show Nova Server Logs

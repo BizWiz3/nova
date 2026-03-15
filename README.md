@@ -19,6 +19,9 @@
   - [Routing Conventions](#routing-conventions)
   - [Middleware Chaining](#middleware-chaining)
   - [Performance Benchmarks](#performance-benchmarks)
+    - [Latest Performance (Auto-updated)](#latest-performance-auto-updated)
+      - [📊 HTTP / k6 Metrics](#-http--k6-metrics)
+      - [🖥️ Container Resource Usage (during benchmark)](#️-container-resource-usage-during-benchmark)
 
 ## Installation & Usage
 
@@ -146,13 +149,13 @@ end)
 
 | Total Requests | Requests/sec | p95 Latency | p90 Latency | Median Latency | Avg Latency | Success Rate | Failed Requests | Throughput |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **459225** | **5741.61 req/s** | **22.51ms** | **17.85ms** | **9.53ms** | **41.09ms** | **99.00%** | **242** | **0.70 MB/s** |
+| **472426** | **5913.38 req/s** | **21.85ms** | **17.57ms** | **9.22ms** | **46.10ms** | **99.00%** | **322** | **0.72 MB/s** |
 
 #### 🖥️ Container Resource Usage (during benchmark)
 
 | Peak CPU | Avg CPU | Peak Memory | Avg Memory % |
 | :--- | :--- | :--- | :--- |
-| 138.66% | 43.61% | 72.48MiB | 0.21% |
+| 138.23% | 45.12% | 72.92MiB | 0.21% |
 
-_Last Benchmarked: Sun Mar 15 03:22:46 UTC 2026_
+_Last Benchmarked: Sun Mar 15 04:23:28 UTC 2026_
 <!-- BENCHMARK_END -->

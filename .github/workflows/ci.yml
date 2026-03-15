@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  ci-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Lune
+        run: |
+          curl -f -L "https://github.com/lune-org/lune/releases/download/v0.10.4/lune-0.10.4-linux-x86_64.zip" -o lune.zip
+          unzip -j lune.zip
+          chmod +x lune
+          sudo mv lune /usr/local/bin/lune
+          rm lune.zip
+
+      - name: Install Pesde
+        run: |
+          curl -f -L "https://github.com/pesde-pkg/pesde/releases/download/v0.7.2+registry.0.2.3/pesde-0.7.2-linux-x86_64.zip" -o pesde.zip
+          unzip -j pesde.zip
+          chmod +x pesde
+          sudo mv pesde /usr/local/bin/pesde
+          rm pesde.zip
+
+      - name: Install CI Dependencies
+        working-directory: ./ci
+        run: pesde install
+        env:
+          PESDE_CONFIG_USER_TOKEN_STORE: file
+
+      - name: Debug - Check lune_packages
+        working-directory: ./ci
+        run: ls -la && ls -la lune_packages/ || echo "lune_packages not found"
+
+      - name: Run CI Tests
+        working-directory: ./ci
+        run: lune run test
