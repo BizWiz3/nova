@@ -1,5 +1,11 @@
 # Changelog
 
+## `v0.3.2` - March 15, 2026
+
+###  Fixed
+
+Fixed typos on `routing.luau`
+
 ## `v0.3.1` - March 14, 2026
 
 ### Fixed
