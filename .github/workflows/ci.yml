@@ -36,6 +36,10 @@ jobs:
         env:
           PESDE_CONFIG_USER_TOKEN_STORE: file
 
+      - name: Debug - Check lune_packages
+        working-directory: ./ci
+        run: ls -la && ls -la lune_packages/ || echo "lune_packages not found"
+
       - name: Run CI Tests
         working-directory: ./ci
         run: lune run test
