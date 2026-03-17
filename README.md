@@ -1,27 +1,37 @@
-# Nova
-
-[![Static Badge](https://img.shields.io/badge/pesde-bizwiz3/nova-F19D1E?style=flat)](https://pesde.dev/packages/bizwiz3/nova)
-[![Static Badge](https://img.shields.io/badge/github-bizwiz3/benchmark-blue?style=flat)](https://github.com/BizWiz3/nova)
-[![Static Badge](https://github.com/BizWiz3/nova/actions/workflows/ci.yml/badge.svg)](https://github.com/BizWiz3/nova/actions/workflows/ci.yml)
-
-**A high-performance, filesystem-based web framework built specifically for the [Lune](https://lune-org.github.io/docs/) runtime.**
+<div align="center">
+    <div>
+        <img src="NOVA.svg" alt="Nova logo">
+    </div>
+    <br>
+    <a href="https://pesde.dev/packages/bizwiz3/nova">
+        <img src="https://img.shields.io/badge/pesde-bizwiz3/nova-F19D1E?style=flat">
+    </a>
+    <a href="https://github.com/BizWiz3/nova/blob/main/README.md">
+        <img src="https://img.shields.io/badge/github-bizwiz3/benchmark-blue?style=flat">
+    </a>
+    <a href="https://github.com/BizWiz3/nova/actions/workflows/ci.yml">
+        <img src="https://github.com/BizWiz3/nova/actions/workflows/ci.yml/badge.svg">
+    </a>
+    <h3>
+        A high-performance, filesystem-based web framework built specifically for the <a src="https://lune-org.github.io/docs/" alt="Lune Runtime">Lune</a> runtime.
+    </h3>
+</div> 
 
 ## Table of Contents
 
-- [Nova](#nova)
-  - [Table of Contents](#table-of-contents)
-  - [Installation \& Usage](#installation--usage)
-    - [Manual Installation](#manual-installation)
-      - [Usage](#usage)
-    - [Install a boilerplate](#install-a-boilerplate)
-  - [Core Features](#core-features)
-  - [Route Definition](#route-definition)
-  - [Routing Conventions](#routing-conventions)
-  - [Middleware Chaining](#middleware-chaining)
-  - [Performance Benchmarks](#performance-benchmarks)
-    - [Latest Performance (Auto-updated)](#latest-performance-auto-updated)
-      - [📊 HTTP / k6 Metrics](#-http--k6-metrics)
-      - [🖥️ Container Resource Usage (during benchmark)](#️-container-resource-usage-during-benchmark)
+- [Table of Contents](#table-of-contents)
+- [Installation \& Usage](#installation--usage)
+  - [Manual Installation](#manual-installation)
+    - [Usage](#usage)
+  - [Install a boilerplate](#install-a-boilerplate)
+- [Core Features](#core-features)
+- [Route Definition](#route-definition)
+- [Routing Conventions](#routing-conventions)
+- [Middleware Chaining](#middleware-chaining)
+- [Performance Benchmarks](#performance-benchmarks)
+  - [Latest Performance (Auto-updated)](#latest-performance-auto-updated)
+    - [📊 HTTP / k6 Metrics](#-http--k6-metrics)
+    - [🖥️ Container Resource Usage (during benchmark)](#️-container-resource-usage-during-benchmark)
 
 ## Installation & Usage
 
