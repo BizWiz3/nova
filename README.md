@@ -1,27 +1,37 @@
-# Nova
-
-[![Static Badge](https://img.shields.io/badge/pesde-bizwiz3/nova-F19D1E?style=flat)](https://pesde.dev/packages/bizwiz3/nova)
-[![Static Badge](https://img.shields.io/badge/github-bizwiz3/benchmark-blue?style=flat)](https://github.com/BizWiz3/nova)
-[![Static Badge](https://github.com/BizWiz3/nova/actions/workflows/ci.yml/badge.svg)](https://github.com/BizWiz3/nova/actions/workflows/ci.yml)
-
-**A high-performance, filesystem-based web framework built specifically for the [Lune](https://lune-org.github.io/docs/) runtime.**
+<div align="center">
+    <div>
+        <img src="NOVA.svg" alt="Nova logo">
+    </div>
+    <br>
+    <a href="https://pesde.dev/packages/bizwiz3/nova">
+        <img src="https://img.shields.io/badge/pesde-bizwiz3/nova-F19D1E?style=flat">
+    </a>
+    <a href="https://github.com/BizWiz3/nova/blob/main/README.md">
+        <img src="https://img.shields.io/badge/github-bizwiz3/benchmark-blue?style=flat">
+    </a>
+    <a href="https://github.com/BizWiz3/nova/actions/workflows/ci.yml">
+        <img src="https://github.com/BizWiz3/nova/actions/workflows/ci.yml/badge.svg">
+    </a>
+    <h3>
+        A high-performance, filesystem-based web framework built specifically for the <a href="https://lune-org.github.io/docs/" alt="Lune Runtime">Lune</a> runtime.
+    </h3>
+</div> 
 
 ## Table of Contents
 
-- [Nova](#nova)
-  - [Table of Contents](#table-of-contents)
-  - [Installation \& Usage](#installation--usage)
-    - [Manual Installation](#manual-installation)
-      - [Usage](#usage)
-    - [Install a boilerplate](#install-a-boilerplate)
-  - [Core Features](#core-features)
-  - [Route Definition](#route-definition)
-  - [Routing Conventions](#routing-conventions)
-  - [Middleware Chaining](#middleware-chaining)
-  - [Performance Benchmarks](#performance-benchmarks)
-    - [Latest Performance (Auto-updated)](#latest-performance-auto-updated)
-      - [📊 HTTP / k6 Metrics](#-http--k6-metrics)
-      - [🖥️ Container Resource Usage (during benchmark)](#️-container-resource-usage-during-benchmark)
+- [Table of Contents](#table-of-contents)
+- [Installation \& Usage](#installation--usage)
+  - [Manual Installation](#manual-installation)
+    - [Usage](#usage)
+  - [Install a boilerplate](#install-a-boilerplate)
+- [Core Features](#core-features)
+- [Route Definition](#route-definition)
+- [Routing Conventions](#routing-conventions)
+- [Middleware Chaining](#middleware-chaining)
+- [Performance Benchmarks](#performance-benchmarks)
+  - [Latest Performance (Auto-updated)](#latest-performance-auto-updated)
+    - [📊 HTTP / k6 Metrics](#-http--k6-metrics)
+    - [🖥️ Container Resource Usage (during benchmark)](#️-container-resource-usage-during-benchmark)
 
 ## Installation & Usage
 
@@ -149,13 +159,13 @@ end)
 
 | Total Requests | Requests/sec | p95 Latency | p90 Latency | Median Latency | Avg Latency | Success Rate | Failed Requests | Throughput |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **687101** | **8592.95 req/s** | **29.76ms** | **23.84ms** | **11.22ms** | **24.63ms** | **99.00%** | **141** | **1.05 MB/s** |
+| **465875** | **5834.28 req/s** | **22.21ms** | **17.65ms** | **9.41ms** | **42.87ms** | **99.00%** | **310** | **0.71 MB/s** |
 
 #### 🖥️ Container Resource Usage (during benchmark)
 
 | Peak CPU | Avg CPU | Peak Memory | Avg Memory % |
 | :--- | :--- | :--- | :--- |
-| 126.51% | 43.58% | 82.54MiB | 0.24% |
+| 135.11% | 44.77% | 72.78MiB | 0.22% |
 
-_Last Benchmarked: Sun Mar 15 15:00:34 UTC 2026_
+_Last Benchmarked: Tue Mar 17 15:16:34 UTC 2026_
 <!-- BENCHMARK_END -->
