@@ -14,7 +14,9 @@ export type RequestWith<T> = {
     method: string,
     path: string,
     body: {any},
-    headers: {any},
+    headers: {
+        [string]: string?
+    }?,
     params: T,
     query: T
 }

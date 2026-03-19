@@ -3,7 +3,7 @@
 
 local Types = require("../types")
 local Response = require("../utils/response")
-local serde = require("@lune/serde")
+local BodyParsers = require("./bodyParsers")
 
 local staticRoutes: { [string]: any } = {}
 
@@ -75,15 +75,19 @@ local function routerDispatcher(request: Types.Request)
     local decodedBody = {}
 
     if #rawBody > 0 then
-        local success, result = pcall(function()
-            return serde.decode("json", rawBody :: string)
-        end)
-        
-        if success then
-            decodedBody = result
-        else
-            print("Warning: Failed to decode JSON body")
+        if not request.headers then 
+            return Response.json({ error = "Conflict" }, { status = 409 })
         end
+
+        local rawType = request.headers["content-type"] or ""
+        local cleanType = rawType:split(";")[1]
+        local parser = BodyParsers[cleanType]
+
+        if not parser then 
+            return Response.json({ error = "Unsupported Media Type" }, { status = 415 })
+        end
+
+        decodedBody = parser(rawBody :: string)
     end
 
     local req = {
