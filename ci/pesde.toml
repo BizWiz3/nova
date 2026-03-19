@@ -14,5 +14,4 @@ bin = "src/index.luau"
 default = "https://github.com/pesde-pkg/index"
 
 [dependencies]
-lunemon = { name = "bizwiz3/lunemon", version = "^0.1.1" }
 aura = { name = "bizwiz3/aura", version = "^0.1.0" }
