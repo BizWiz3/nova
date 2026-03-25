@@ -102,10 +102,6 @@ function Nova:listen(handler: () -> ())
             
             local finalHeaders = {}
             if success then 
-                if process.env.LUNE_ENV == "dev" then
-                    finalHeaders["X-Powered-By"] = "Nova-Framework"
-                end
-
                 if result.config and result.config.headers then
                     for key, value in pairs(result.config.headers) do
                         finalHeaders[key] = value
@@ -118,16 +114,15 @@ function Nova:listen(handler: () -> ())
                     headers = finalHeaders
                 }
             else
-                local errorMessage = tostring(result)
+                local errorMessage = debug.traceback(tostring(result), 2)
+                print(`{color}[Error]: {errorMessage}{reset}`)
 
                 finalHeaders["Content-Type"] = "application/json"
-                finalHeaders["X-Powered-By"] = "Nova-Framework"
 
                 return {
                     status = 500,
                     body = serde.encode("json", {
-                    error = "Internal Server Error",
-                    message = process.env.LUNE_ENV == "dev" and errorMessage or "An unexpected error occurred", 
+                    error = "Internal Server Error", 
                     }),
                     headers = finalHeaders
                 }
