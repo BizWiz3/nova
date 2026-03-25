@@ -43,7 +43,7 @@ BodyParsers["application/x-www-form-urlencoded"] = function(raw: string)
             data[decodedKey] = decodedValue
         end
     end
-    print(data)
+
     return data 
 end
 

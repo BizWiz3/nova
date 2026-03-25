@@ -21,7 +21,7 @@ local function chain(middlewares: { Middleware }?, finalHandler: Handler)
 
                 local function nextFn()
                     if nextCalled then
-                        error(`[Nova] next() was called multiple times in middleware #{currentIndex}`)
+                        error(`next() was called multiple times in middleware #{currentIndex}`)
                     end
                     nextCalled = true
                     runNext()
@@ -32,7 +32,7 @@ local function chain(middlewares: { Middleware }?, finalHandler: Handler)
                 if result ~= nil then
                     finalResponse = result
                 elseif not nextCalled then
-                    error(`[Nova] Middleware at index {currentIndex} failed to call next() or return a response!`)
+                    error(`Middleware at index {currentIndex} failed to call next() or return a response!`)
                 end
             else
                 local result = finalHandler(req)
@@ -40,7 +40,7 @@ local function chain(middlewares: { Middleware }?, finalHandler: Handler)
                 if result ~= nil then
                     finalResponse = result
                 else
-                    error("[Nova] Final route handler did not return a response!")
+                    error("Final route handler did not return a response!")
                 end
             end
         end
