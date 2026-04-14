@@ -38,12 +38,6 @@ jobs:
           sudo mv pesde /usr/local/bin/pesde
           rm pesde.zip
 
-      - name: Install CI Dependencies
-        working-directory: ./ci
-        run: pesde install
-        env:
-          PESDE_CONFIG_USER_TOKEN_STORE: file
-
       - name: Run Lune CI
         working-directory: .
         run: lune run test

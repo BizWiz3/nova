@@ -8,12 +8,12 @@ function Tester.describe(name, callback)
     local server = process.create("lune", { "run", "src/index" }, { env = process.env })
     
     local ready = false
-    for i = 1, 10 do
+    for i = 1, 20 do
         local success = pcall(function()
             return Aura.get({ url = "http://localhost:8080", timeout = 500 })
         end)
         if success then ready = true; break end
-        task.wait(0.5)
+        task.wait(1)
     end
 
     if not ready then
