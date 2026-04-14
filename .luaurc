@@ -4,7 +4,7 @@
         "warn"
     ],
     "aliases": {
-        "c":"/home/wiz/projects/nova/ci/",
+        "c":"",
         "lune": "~/.lune/.typedefs/0.10.4/",
         "pesde": "lune_packages/"
     }
