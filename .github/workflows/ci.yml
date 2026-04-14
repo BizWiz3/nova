@@ -39,9 +39,9 @@ jobs:
           rm pesde.zip
 
       - name: Run Lune CI
-        working-directory: .
+        working-directory: ./ci
         run: lune run test
 
       - name: Run Zune CI
-        working-directory: .
+        working-directory: ./ci
         run: zune run test

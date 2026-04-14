@@ -5,15 +5,15 @@ local task = require("../../src/libs/task")
 local Tester = {}
 
 function Tester.describe(name, callback)
-    local server = process.create("lune", { "run", "src/index" }, { env = process.env })
+    local server = process.create("lune", { "run", "src/index" }, { env = process.env :: any })
     
     local ready = false
-    for i = 1, 20 do
+    for i = 1, 10 do
         local success = pcall(function()
             return Aura.get({ url = "http://localhost:8080", timeout = 500 })
         end)
         if success then ready = true; break end
-        task.wait(1)
+        task.wait(0.5)
     end
 
     if not ready then
