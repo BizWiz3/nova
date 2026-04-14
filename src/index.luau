@@ -7,6 +7,7 @@ local Routing = require("./core/routing")
 local loadEnv = require("./utils/loadEnv")
 local findMainDir = require("./utils/findMainDir")
 local generateRoute = require("./core/generateRoute")
+local generateAlias = require("./utils/generateAlias")
 
 export type Next = types.Next
 export type Nova = types.Nova
@@ -57,6 +58,8 @@ function Nova:listen(handler: () -> ())
             }
         }
     end
+
+    generateAlias()
 
     generateRoute(mainDir, "")
 
