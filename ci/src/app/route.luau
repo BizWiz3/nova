@@ -4,7 +4,7 @@ local Home = {}
 
 function Home.Get(req: Nova.Request)
     
-    return Nova.response.json({ msg = "Hello World", body = req.body })
+    return Nova.response.send("Hello, World")
 end
 
 return Home

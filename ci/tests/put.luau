@@ -1,4 +1,4 @@
-local Aura = require("@pesde/aura")
+local Aura = require("../aura/src/index")
 local Tester = require("../utils/tester")
 
 Tester.describe("POST Method", function()

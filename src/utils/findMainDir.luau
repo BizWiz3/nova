@@ -1,6 +1,5 @@
-local fs = require("@lune/fs")
-local process = require("@lune/process")
-local warn = require("./warn")
+local fs = require("../libs/fs")
+local process = require("../libs/process")
 
 local function findMainDir()
     local basePath = process.cwd

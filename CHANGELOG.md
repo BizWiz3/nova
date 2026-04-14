@@ -1,5 +1,23 @@
 # Changelog
 
+## `v0.4.0` - April 14, 2026
+
+### Added
+
+- **Runtime Abstraction Layer**: Introduced an adapter pattern for core libraries (`fs`, `net`, `process`, `serde`, and `task`), decoupling the framework from specific runtime implementations.
+- **Zune Runtime Support**: Added full support for the Zune runtime.
+
+### Changed
+
+- **Runtime-Agnostic Utilities**: Refactored internal utility functions to utilize the new abstraction layer, removing direct dependencies on `@lune` built-ins.
+- **Enhanced CI Pipeline**: Updated GitHub Actions to install Zune and execute the test suite across both Lune and Zune runtimes to ensure cross-runtime compatibility.
+
+## `v0.3.5` - March 29, 2026
+
+### Changed
+
+* Refactor middleware and remove unnecessary optimizations
+
 ## `v0.3.4` - March 25, 2026
 
 ### Added

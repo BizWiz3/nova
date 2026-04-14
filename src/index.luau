@@ -1,7 +1,7 @@
-local net = require("@lune/net")
-local fs = require("@lune/fs")
-local serde = require("@lune/serde")
-local process = require("@lune/process")
+local net = require("./libs/net")
+local fs = require("./libs/fs")
+local serde = require("./libs/serde")
+local process = require("./libs/process")
 local types = require("./types")
 local Routing = require("./core/routing")
 local loadEnv = require("./utils/loadEnv")
@@ -33,15 +33,12 @@ end
 
 function Nova:listen(handler: () -> ())
     local start = os.clock()
-    generateAlias()
         
     local mainDirName = findMainDir()
     local mainDir = `@c/{mainDirName}`
         
     local faviconPath = `{process.cwd}/{mainDirName}/favicon.ico`
-    local isDev = process.env.LUNE_ENV ~= nil
-
-    local enableLogging = isDev
+    local enableLogging = process.env.LUNE_ENV ~= nil
 
     local INTERNAL_ERROR_RESPONSE = {
         status = 500,
@@ -57,20 +54,22 @@ function Nova:listen(handler: () -> ())
             status = 200,
             body = fs.readFile(faviconPath),
             headers = {["Content-Type"] = "image/x-icon",
-                ["Cache-Control"] = isDev and "no-cache" or "public, max-age=86400"
+                ["Cache-Control"] = enableLogging and "no-cache" or "public, max-age=86400"
             }
         }
     end
+
+    generateAlias()
 
     generateRoute(mainDir, "")
 
     local rootPipeline = Nova.chain(self.middlewares, Routing.routerDispatcher)
 
     net.serve(self.port, {
-        address = "http://0.0.0.0",
+        address = "0.0.0.0",
         handleRequest = function(request)
             if request.path == "/favicon.ico" and request.method == "GET" then
-                if isDev and fs.isFile(faviconPath) then
+                if enableLogging and fs.isFile(faviconPath) then
                     return {
                         status = 200,
                         body = fs.readFile(faviconPath),
@@ -79,24 +78,24 @@ function Nova:listen(handler: () -> ())
                         }
                     }
                 end
-                return FAVICON_CACHED_RESPONSE or FAVICON_EMPTY_RESPONSE :: net.ServeResponse
+                return FAVICON_CACHED_RESPONSE or FAVICON_EMPTY_RESPONSE :: net.NetResponse
             end
 
-            local success, result: types.ResponsePayload = pcall(rootPipeline, request)
+            local success, result: types.ResponsePayload | any = pcall(rootPipeline , request)
 
             if not success then
                 if enableLogging then
                     local errorMessage = debug.traceback(tostring(result), 2)
                     print("\27[31m[Error]: " .. errorMessage .. "\27[0m")
                 end
-                return INTERNAL_ERROR_RESPONSE :: net.ServeResponse
+                return INTERNAL_ERROR_RESPONSE :: net.NetResponse
             end
 
-            local status = 200
+            local status: number
             local headers = nil
 
-            if result and result.config then
-                status = result.config.status or 200
+            if result.config then
+                status = result.config.status
                 headers = result.config.headers
             end
 
@@ -108,7 +107,7 @@ function Nova:listen(handler: () -> ())
             end
 
             return {
-                status = status,
+                status = status or 200,
                 body = result and result.body or nil,
                 headers = headers
             }

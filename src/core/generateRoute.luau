@@ -1,6 +1,5 @@
-local fs = require("@lune/fs")
-local process = require("@lune/process")
-local stdio = require("@lune/stdio")
+local fs = require("../libs/fs")
+local process = require("../libs/process")
 local routing = require("./routing") 
 
 local function generateRoute(currentDir: string, currentRoute: string)
@@ -20,11 +19,11 @@ local function generateRoute(currentDir: string, currentRoute: string)
 
             routing.registerRoute(routeKey, routeModule)
             
-            stdio.write(stdio.color("green"))
+            --stdio.write(stdio.color("green"))
             print("Registered Route: " .. routeKey)
-            stdio.write(stdio.color("reset"))
+            --stdio.write(stdio.color("reset"))
 
-        elseif fs.metadata(resolvedPath).kind == "dir" then
+        elseif fs.metadata(resolvedPath).kind == "dir" or fs.metadata(resolvedPath).kind == "directory" then
             local nextRoute = currentRoute .. "/" .. item
             generateRoute(path, nextRoute)
         end
