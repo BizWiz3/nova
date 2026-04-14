@@ -1,5 +1,5 @@
 local Types = require("../types")
-local serde = require("@lune/serde")
+local serde = require("../libs/serde")
 
 --[[
     Helper function for sending responses

@@ -1,5 +1,5 @@
-local process = require("@lune/process")
-local fs = require("@lune/fs")
+local process = require("../libs/process")
+local fs = require("../libs/fs")
 
 local function loadEnv()
     local envVars = {}

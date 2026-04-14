@@ -1,6 +1,6 @@
-local Aura = require("@pesde/aura")
-local process = require("@lune/process")
-local task = require("@lune/task")
+local Aura = require("../aura/src/index")
+local process = require("../../src/libs/process")
+local task = require("../../src/libs/task")
 
 local Tester = {}
 

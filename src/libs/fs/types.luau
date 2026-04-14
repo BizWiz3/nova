@@ -1,0 +1,23 @@
+
+export type FsMetadata = {
+    kind: "file" | "dir" | "symlink",
+    exists: boolean,
+    createdAt: DateTime,
+    modifiedAt: DateTime,
+    accessedAt: DateTime,
+    permissions: {
+        readOnly: boolean
+    }
+}
+
+export type FsAdapter = {
+    isFile: (path: string) -> boolean,
+    readFile: (path: string) -> string,
+    writeFile: (path: string, contents: buffer | string) -> (),
+    isDir: (path: string) -> boolean,
+    readDir: (path: string) -> {string},
+    metadata: (path: string) -> FsMetadata,
+    loadModule: (path: string) -> any
+}
+
+return {}

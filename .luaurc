@@ -1,7 +1,10 @@
 {
     "languageMode": "strict",
+    "globals": [
+        "warn"
+    ],
     "aliases": {
-        "c": "",
+        "c":"/home/wiz/projects/nova/ci/",
         "lune": "~/.lune/.typedefs/0.10.4/",
         "pesde": "lune_packages/"
     }
