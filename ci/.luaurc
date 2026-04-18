@@ -1,1 +1,12 @@
-{"languageMode":"strict","aliases":{"pesde":"lune_packages/","lune":"~/.lune/.typedefs/0.10.4/","c":"/home/wiz/projects/nova/ci/","nova":"/home/wiz/projects/nova/src/"},"globals":["warn"]}
+{
+  "aliases": {
+    "c": "/home/wiz/projects/nova/ci/",
+    "lune": "~/.lune/.typedefs/0.10.4/",
+    "nova": "../src/",
+    "pesde": "lune_packages/"
+  },
+  "globals": [
+    "warn"
+  ],
+  "languageMode": "strict"
+}
