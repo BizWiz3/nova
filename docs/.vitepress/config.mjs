@@ -6,7 +6,7 @@ export default defineConfig({
   title: "Nova",
   description: "A filesystem-based web framework for Luau runtimes, with out-of-the-box support for Lune and Zune.",
   head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
-  base: "/nova/",
+  base: "/core/",
   themeConfig: {
     nav: [
       { text: 'Home', link: '/' },
