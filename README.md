@@ -1,13 +1,10 @@
 <div align="center">
     <div>
-        <img height="150" src="./docs/nova.png" alt="Nova logo">
+        <img height="150" src="./docs/public/nova.png" alt="Nova logo">
     </div>
     <br>
     <a href="https://pesde.dev/packages/bizwiz3/nova">
         <img src="https://img.shields.io/badge/pesde-bizwiz3/nova-F19D1E?style=flat">
-    </a>
-    <a href="https://github.com/BizWiz3/nova/blob/main/README.md">
-        <img src="https://img.shields.io/badge/github-bizwiz3/benchmark-blue?style=flat">
     </a>
     <a href="https://github.com/BizWiz3/nova/actions/workflows/ci.yml">
         <img src="https://github.com/BizWiz3/nova/actions/workflows/ci.yml/badge.svg">

@@ -42,5 +42,3 @@ return Home
 ## Why use Nova?
 
 If you're looking to build a web backend for your Roblox game, a custom dashboard, or just want to experiment with Luau outside of the engine, Nova is here to make that process easier. It’s not about making things complicated; it’s about giving you a standard way to build things quickly.
-
-Ready to get started? [Check out the Installation guide!](http://just-a-test-link.com)
