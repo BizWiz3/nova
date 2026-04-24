@@ -30,7 +30,18 @@ function ZuneFs.readDir(path: string)
 end
 
 function ZuneFs.metadata(path: string)
-    return fs.metadata(path) :: any
+    local metadata = fs.metadata(path)
+
+    return {
+        kind = metadata.kind == "directory" and "dir",
+        exists = true,
+        createdAt = metadata.created_at,
+        modifiedAt = metadata.modified_at,
+        accessedAt = metadata.accessed_at,
+        permissions = {
+            readOnly = metadata.permissions.read_only
+        }
+    } :: Types.FsMetadata
 end
 
 return ZuneFs

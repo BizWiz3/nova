@@ -1,32 +1,22 @@
 local fs = require("@lute/fs")
-local process = require("@lute/process")
 local Types = require("./types")
 
 local LuteFs = {} :: Types.FsAdapter
 
-local function pathType(path: string): string?
-    local result = process.run({ "test", "-f", path })
-    if result.ok then return "file" end
-    local result2 = process.run({ "test", "-d", path })
-    if result2.ok then return "dir" end
-    return nil
-end
-
 function LuteFs.isFile(path: string)
-    return pathType(path) == "file"
+    return fs.stat(path).type == "file"
 end
 
 function LuteFs.isDir(path: string)
-    return pathType(path) == "dir"
+    return fs.stat(path).type == "dir"
 end
 
 function LuteFs.readFile(path: string): string
-    local result = process.run({ "cat", path })
-    if result.ok then
-        return result.stdout
-    else
-        return result.stderr
-    end
+    local fileHandle = fs.open(path)
+    local fileContent = fs.read(fileHandle)
+    fs.close(fileHandle)
+
+    return fileContent
 end
 
 function LuteFs.writeFile(path: string, contents: string)
@@ -41,15 +31,14 @@ function LuteFs.writeFile(path: string, contents: string)
 end
 
 function LuteFs.readDir(path: string)
-    local result = process.run({ "ls", "-1", path })
-    if not result.ok then
-        error("Directory not found: " .. path)
+    local dirEntry: {fs.DirectoryEntry} = fs.listdir(path)
+    local dirList = {}
+
+    for i = 1, table.maxn(dirEntry) do
+        table.insert(dirList, dirEntry[i].name)
     end
-    local names = {}
-    for name in result.stdout:gmatch("[^\n]+") do
-        table.insert(names, name)
-    end
-    return names
+
+    return dirList
 end
 
 function LuteFs.metadata(path: string)
