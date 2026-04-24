@@ -1,7 +1,7 @@
-local function checkRuntime()
-    local runtime = string.split(_VERSION, " ")
+local runtime = string.split(_VERSION, " ")[1]:lower()
 
-    return runtime[1]:lower()
+local function checkRuntime()
+    return runtime
 end
 
 return checkRuntime
