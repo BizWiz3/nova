@@ -4,11 +4,19 @@ local Types = require("./types")
 local LuteFs = {} :: Types.FsAdapter
 
 function LuteFs.isFile(path: string)
-    return fs.stat(path).type == "file"
+    local ok, err = pcall(function()  
+        return fs.stat(path).type == "file"
+    end)
+
+    return if ok then err else ok
 end
 
 function LuteFs.isDir(path: string)
-    return fs.stat(path).type == "dir"
+    local ok, err = pcall(function()  
+        return fs.stat(path).type == "dir"
+    end)
+
+    return if ok then err else ok
 end
 
 function LuteFs.readFile(path: string): string
