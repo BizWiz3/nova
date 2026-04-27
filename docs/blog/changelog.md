@@ -1,5 +1,19 @@
 # Changelog
 
+## `v0.5.4` - April 27, 2026
+
+### Added
+
+- Implement custom test runner and add initial unit tests (#49)
+- Add error handling to file and directory checks in LuteFs (#47)
+- Add initial CI workflow for testing with Lune, Zune, and Lute (#50)
+- Streamline function calls and improve code readability across multiple modules (#51)
+
+### Changed
+
+- Improve release workflow and fix documentation (#46)
+- Convert matchRoute to iterative with targeted recursive fallback (#48)
+
 ## `v0.5.2` - April 24, 2026
 
 ### Changed
