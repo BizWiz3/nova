@@ -12,10 +12,10 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /introduction/what-is-nova
+      link: /docs/introduction/what-is-nova
     - theme: alt
-      text: Guides
-      link: guides/project-structure
+      text: Luau Guides
+      link: /luau-guides/introduction
 
 features:
   - title: Middleware Support
