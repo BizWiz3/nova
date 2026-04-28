@@ -1,15 +1,11 @@
 {
-    "languageMode": "strict",
-    "globals": [
-        "warn"
-    ],
     "aliases": {
-        "src": "./src/",
+        "std": "~/.lute/typedefs/1.0.0/std",
         "c": "/home/wiz/projects/nova-projects/nova/tests/web/",
         "lint": "~/.lute/typedefs/1.0.0/lint",
-        "test-runner": "./tests/runner",
-        "std": "~/.lute/typedefs/1.0.0/std",
+        "nova": "../../src/index",
         "lune": "~/.lune/.typedefs/0.10.4/",
+        "pkg": "./lune_packages/",
         "lute": "~/.lute/typedefs/1.0.0/lute"
     }
 }

@@ -32,7 +32,7 @@ function LuneSerde.encode(format, value, pretty)
         error(`Unsupported format: "{format}"`)
     end
 
-    return encoder(value)
+    return encoder(value, { pretty_indent = 2 })
 end
 
 return LuneSerde

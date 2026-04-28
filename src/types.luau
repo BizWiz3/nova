@@ -47,7 +47,7 @@ export type Response = {
     --[[
         Respond with a json
     ]]
-    json: (body: {any}, config: ResponseOptions?) -> ResponsePayload,
+    json: <T>(body: T, config: ResponseOptions?) -> ResponsePayload,
 
     --[[
         Respond with an html
