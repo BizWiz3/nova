@@ -47,15 +47,12 @@ local function chain(middlewares: { Types.Middleware }?, finalHandler: Types.Han
         local req = {
             method = rawReq.method,
             path = rawReq.path,
-            query = rawReq.query,
-            headers = rawReq.headers,
+            query = rawReq.query or {},
+            headers = rawReq.headers or {},
             body = rawReq.body,
-            
-            locals = {},
-            
+            params = {},
             raw = rawReq 
         }
-        
         return currentPipeline(req)
     end
 end
