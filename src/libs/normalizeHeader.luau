@@ -1,17 +1,14 @@
 -- Normalizes an HTTP header key to a consistent Pascal-Case format (e.g., "content-type" -> "Content-Type").
+local cache: { [string]: string } = {}
+
 local function normalizeHeader(header: string): string
-    local parts = string.split(header, "-")
-    local normalizedParts = {}
+    local cached = cache[header]
+    if cached then return cached end
 
-    for i, part in ipairs(parts) do
-        if #part > 0 then
-            normalizedParts[i] = part:sub(1, 1):upper() .. part:sub(2):lower()
-        else
-            normalizedParts[i] = ""
-        end
-    end
+    local normalized = header:lower():gsub("%f[%a]%a", string.upper)
 
-    return table.concat(normalizedParts, "-")
+    cache[header] = normalized
+    return normalized
 end
 
 return normalizeHeader
