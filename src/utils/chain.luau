@@ -25,6 +25,8 @@ local function chain(middlewares: { Types.Middleware }?, finalHandler: Types.Han
                 end
                 nextCalled = true
                 nextResponse = nextHandler(req)
+
+                return nextResponse
             end
             
             local result = (middleware :: Types.Middleware)(req, nextFn)

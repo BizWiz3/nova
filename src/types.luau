@@ -1,6 +1,6 @@
 -- TODO: Enhance the types 
 
-export type Next = () -> ()
+export type Next = () -> NextResponse
 
 export type Nova = {
     --[[
@@ -36,6 +36,12 @@ export type ResponseOptions = {
 export type ResponsePayload = {
     body: string,
     config: ResponseOptions
+}
+
+export type NextResponse = {
+    status: number?,
+    body: any,
+    headers: { [string]: string }?
 }
 
 export type Response = {
