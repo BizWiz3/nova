@@ -5,11 +5,13 @@ local LuteProcess = {} :: Types.ProcessAdapter
 
 local cwd = process.cwd
 local env = process.env
+local args = process.args
 local run = process.run
 local exit = process.exit
 
 LuteProcess.cwd = cwd() .. "/"
 LuteProcess.env = env :: { [string]: string? }
+LuteProcess.args = args
 
 function LuteProcess.create(exec, args, opts: ProcessOptions?): ProcessChild?
     if not args then 

@@ -5,6 +5,7 @@ cwd = "."
  
 [workspace.scripts]
 start = ".zune/start"
+dev = ".zune/dev"
 test = ".zune/test"
 
 [runtime.debug]
