@@ -30,7 +30,7 @@ jobs:
             found { print }
           " "$CHANGELOG")
 
-          LINKIFIED_BODY=$(echo "$BODY" | sed -E 's/\(#([0-9]+)\)/([#\1](https:\/\/github.com\/'"${GITHUB_REPOSITORY}"'\/pull\/\1))/g')
+          LINKIFIED_BODY=$(echo "$BODY" | sed -E 's|\(#([0-9]+)\)|([#\1](https://github.com/'"${GITHUB_REPOSITORY}"'/pull/\1))|g')
 
           echo "body<<EOF" >> $GITHUB_OUTPUT
           echo "$LINKIFIED_BODY" >> $GITHUB_OUTPUT
