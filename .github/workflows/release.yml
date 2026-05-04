@@ -49,9 +49,10 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           content: "@everyone A new update has been published!"
+          title: ""
           notitle: true 
           description: |
-            # [🍁 ${{ github.ref_name }}](https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }})
+            ## [🍁 ${{ github.ref_name }}](https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }})
             
             ${{ steps.changelog.outputs.body }}
           

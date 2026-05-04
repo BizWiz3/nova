@@ -1,5 +1,11 @@
 # Changelog
 
+## `v0.5.7-test` - May 4, 2026
+
+### Changed
+
+- Update changelog header format in Discord notification
+
 ## `v0.5.7` - May 4, 2026
 
 ### Changed
