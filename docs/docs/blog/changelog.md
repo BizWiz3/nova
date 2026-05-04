@@ -1,5 +1,19 @@
 # Changelog
 
+## `v0.5.5` - May 4, 2026
+
+### Added
+
+- Add Discord release notifier workflow for automated notifications (#61)
+- Add development mode with request logging and runtime argument support (#60)
+- Add web test suite (#57)
+
+### Changed
+
+- Optimize header normalization (#59)
+- **(Docs)** Restructure documentation and add comprehensive Luau guides (#58)
+- Simplify routing dispatcher and improve request object consistency (#56)
+
 ## `v0.5.4` - April 27, 2026
 
 ### Added
