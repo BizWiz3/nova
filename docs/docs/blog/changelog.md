@@ -1,5 +1,11 @@
 # Changelog
 
+## `v0.5.6` - May 4, 2026
+
+### Changed
+
+- Enhance release workflow to notify Discord and consolidate notification logic (#63)
+
 ## `v0.5.5` - May 4, 2026
 
 ### Added
