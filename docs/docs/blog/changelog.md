@@ -1,5 +1,11 @@
 # Changelog
 
+## `v0.5.7` - May 4, 2026
+
+### Changed
+
+- Enhance changelog extraction and Discord notification formatting (#65)
+
 ## `v0.5.6` - May 4, 2026
 
 ### Changed
